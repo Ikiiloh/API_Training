@@ -1,0 +1,58 @@
+[
+    {
+        "id": 53,
+        "Nama": "Ball LCBL",
+        "jenis": "rok",
+        "Tanggal_masuk": "2024-06-29",
+        "jumlah": 8,
+        "harga": 1000000
+    },
+    {
+        "id": 57,
+        "Nama": "Ball JKLO",
+        "jenis": "Hoodie",
+        "Tanggal_masuk": "2024-06-30",
+        "jumlah": 5,
+        "harga": 2500000
+    },
+    {
+        "id": 59,
+        "Nama": "Ball KGH",
+        "jenis": "Sweter",
+        "Tanggal_masuk": "2024-06-28",
+        "jumlah": 5,
+        "harga": 3000000
+    },
+    {
+        "id": 61,
+        "Nama": "Ball AMDK",
+        "jenis": "Kulot",
+        "Tanggal_masuk": "2024-07-01",
+        "jumlah": 5,
+        "harga": 500000
+    },
+    {
+        "id": 63,
+        "Nama": "Ball LCBL",
+        "jenis": "rok",
+        "Tanggal_masuk": "2024-06-29",
+        "jumlah": 2,
+        "harga": 1000000
+    },
+    {
+        "id": 64,
+        "Nama": "Ball LCBL",
+        "jenis": "rok",
+        "Tanggal_masuk": "2024-07-01",
+        "jumlah": 1,
+        "harga": 1000000
+    },
+    {
+        "id": 68,
+        "Nama": "Ball AMG1",
+        "jenis": "Celana Jeans",
+        "Tanggal_masuk": "2024-10-24",
+        "jumlah": 2,
+        "harga": 10000000
+    }
+]
