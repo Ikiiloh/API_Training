@@ -1,0 +1,33 @@
+[
+    {
+        "nama" : "Riski",
+        "umur" : 20,
+        "NIM"  : 2217020018,
+        "lulus": false,
+        "hobby": [
+            "belajar",
+            "gaming",
+            "nonton"
+        ],
+        "pembimbing" : {
+            "Pembimbing_1": "Ahmad Fauzi",
+            "Pembimbing_2": "Raju Wandira"
+        }
+
+    },
+    {
+        "nama" : "Rudi",
+        "umur" : 22,
+        "NIM"  : 2017020034,
+        "lulus": true,
+        "hobby": [
+            "berak",
+            "makan",
+            "tidur"
+        ],
+        "pembimbing" : {
+            "Pembimbing_1" : "Anggun Sodikin",
+            "Pembimbing_2" : "Rahmayani"
+        }
+    }
+]
