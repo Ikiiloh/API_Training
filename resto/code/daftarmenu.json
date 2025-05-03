@@ -1,0 +1,45 @@
+{
+  "menu": [
+    {
+      "nama": "Ayam Geprek",
+      "harga": 15000,
+      "kategori": "Makanan Utama",
+      "tersedia": true,
+      "deskripsi": "Ayam goreng tepung yang digeprek dengan sambal pedas khas, disajikan dengan nasi hangat.",
+      "gambar": "https://www.masakapahariini.com/wp-content/uploads/2023/03/shutterstock_1949306203-500x300.jpg"
+    },
+    {
+      "nama": "Nasi Goreng Spesial",
+      "harga": 20000,
+      "kategori": "Makanan Utama",
+      "tersedia": true,
+      "deskripsi": "Nasi goreng dengan bumbu spesial, dilengkapi telur, ayam suwir, dan sayuran segar.",
+      "gambar": "https://asset.kompas.com/crops/VcgvggZKE2VHqIAUp1pyHFXXYCs=/202x66:1000x599/1200x800/data/photo/2023/05/07/6456a450d2edd.jpg"
+    },
+    {
+      "nama": "Es Teh Manis",
+      "harga": 5000,
+      "kategori": "Minuman",
+      "tersedia": true,
+      "deskripsi": "Teh manis dingin yang menyegarkan, cocok diminum saat cuaca panas.",
+      "gambar" : "https://img.okezone.com/content/2022/09/29/487/2677530/apa-benar-sering-minum-es-teh-terlalu-manis-bikin-gemuk-cgRIyHug0Q.jpg"
+      
+    },
+    {
+      "nama": "Jus Alpukat",
+      "harga": 12000,
+      "kategori": "Minuman",
+      "tersedia": false,
+      "deskripsi": "Jus alpukat segar dengan tambahan susu kental manis dan cokelat.",
+      "gambar": "https://cdn1-production-images-kly.akamaized.net/iFPJ8AiolneP_9wJOTcpA7veNXA=/1x65:1000x628/1200x675/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4226654/original/075524400_1668485501-shutterstock_792248107.jpg"
+    },
+    {
+      "nama": "Tahu Crispy",
+      "harga": 8000,
+      "kategori": "Camilan",
+      "tersedia": true,
+      "deskripsi": "Tahu goreng renyah dengan bumbu gurih, cocok untuk camilan sore.",
+      "gambar": "https://akcdn.detik.net.id/visual/2021/01/04/tahu-crispy_169.jpeg?w=1200"
+    }
+  ]
+}  
