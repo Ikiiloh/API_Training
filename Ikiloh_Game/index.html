@@ -27,6 +27,20 @@
       }
       .navbar-brand {
         color: #E0E0E0 !important;
+        transition: all 0.3s ease;
+      }
+      .navbar-brand:hover {
+        transform: scale(1.1);
+        filter: brightness(1.2);
+      }
+      .navbar-brand:active {
+        transform: scale(0.95);
+      }
+      .navbar-brand img {
+        transition: all 0.3s ease;
+      }
+      .navbar-brand:hover img {
+        transform: rotate(5deg);
       }
       h1 {
         color: #000080; /* Navy Blue */
@@ -54,7 +68,7 @@
   <nav class="navbar navbar-expand-lg">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="asset/logo_web_game.png" width="60" height="55" class="d-inline-block align-top">
+        <img src="asset/logo_web_game.svg" width="60" height="55" class="d-inline-block align-top">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -78,7 +92,7 @@
       <h1 class="text-center">Compare games prices</h1>
       <h5 class="text-center">Find the best price for your favorite games</h5>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Find games by name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input type="text" class="form-control" placeholder="Find games by name..." id="search-input">
         <span class="input-group-text" id="search-button">Search</span>
       </div>
     </div>
@@ -89,6 +103,7 @@
     </div>
   </div>
 
+  <hr>
 
   <!-- <div class = "row">
     <div class="col-md-4">
