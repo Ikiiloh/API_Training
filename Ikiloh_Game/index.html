@@ -12,220 +12,70 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+80s+Fade&family=Sixtyfour+Convergence&family=Style+Script&display=swap');      
-      h1, h2 {
-        font-family: 'Press Start 2P', system-ui;
-      }
-      
-      h3, h4, h5, h6, th {
-        font-family: 'Pixelify Sans', cursive;
-      }
-      
-      .style-script-regular {
-        font-family: "Style Script", cursive;
-        font-weight: 400;
-        font-style: normal;
-      }
-
-      body {
-        background-color: #0a2342; /* Dark Blue similar to CheapShark */
-        color: #212529; /* Default text color for main content */
-      }
-      .navbar {
-        background: #000080 !important; /* Navy Blue */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: center; /* Center content horizontally */
-        align-items: center; /* Center content vertically */
-      }
-      .navbar .container {
-        display: flex;
-        justify-content: center; /* Center content horizontally within container */
-        align-items: center; /* Center content vertically within container */
-      }
-      .navbar .nav-link {
-        color: #E0E0E0 !important; /* Light Gray */
-        font-weight: 500;
-      }
-      .navbar .nav-link:hover {
-        color: #FFFFFF !important;
-      }
-      .navbar-brand {
-        color: #E0E0E0 !important;
-        transition: all 0.3s ease;
-        /* Remove existing margin/padding that might affect centering */
-        margin: 0;
-        padding: 0;
-      }
-      .navbar-brand:hover {
-        transform: scale(1.1);
-        filter: brightness(1.2);
-      }
-      .navbar-brand:active {
-        transform: scale(0.95);
-      }
-      .navbar-brand img {
-        transition: all 0.3s ease;
-        width: 100px; /* Enlarge the logo */
-        height: 90px; /* Enlarge the logo */
-      }
-      .navbar-brand:hover img {
-        transform: rotate(5deg);
-      }
-      .main-content-wrapper {
-        background-color: #FFFFFF;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      h1,h2 {
-        color: #980303; /* Navy Blue for headings */
-      }
-      h3,h4,h5,h6 {
-        color: #290b89; /* Navy Blue for headings */
-      }
-      .filters-and-search {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 15px; /* Space between filter sections */
-      }
-      .filter-section,
-      .filter-options {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .filter-label {
-        font-weight: bold;
-        color: #555; /* Darker gray for labels */
-      }
-      .input-group .form-control {
-        border-color: #ced4da;
-      }
-      .input-group-text {
-        background-color: #000080;
-        color: #E0E0E0;
-        border: 1px solid #000080;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      .input-group-text:hover {
-        background-color: #0000a0;
-        color: #FFFFFF;
-      }
-      .form-control:focus {
-        border-color: #80bdff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-      }
-      .form-check-label {
-        color: #555; /* Darker gray for checkbox labels */
-      }
-      .card {
-        border: none;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-      .card-title {
-        color: #000080; /* Navy Blue for card titles */
-      }
-      .card-text {
-        color: #212529; /* Dark text for card text */
-      }
-      .card .text-primary {
-        color: #007bff !important; /* Bootstrap primary blue for price */
-      }
-      .card .text-muted {
-        color: #6c757d !important; /* Bootstrap muted gray for normal price */
-      }
-      .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-      }
-      .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #004085;
-      }
-    </style>
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
 
     <title>Ikiiloh_Game</title>
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="asset/logo_web_game.svg" width="60" height="55" class="d-inline-block align-top">
-      </a>
-    </div>
-  </nav>
- 
-<div class="main-content-wrapper container mt-4">
-  <div class="row mt-3 mb-3 justify-content-center">
-    <div class = "col-md-12">
-
-      <h1 class="text-center">Best Game Deals</h1>
-      <h5 class="text-center">Find your best price for your favorite games</h5>
-      <div class="filters-and-search mb-3">
-        <div class="filter-section">
-          <span class="filter-label">Title:</span>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Find games by name..." id="search-input">
-            <span class="input-group-text" id="search-button">Show</span>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="asset/logo_web_game.svg" width="60" height="55" class="d-inline-block align-top">
+        </a>
+      </div>
+    </nav>
+   
+    <div class="main-content-wrapper container mt-4">
+      <div class="row mt-3 mb-3 justify-content-center">
+        <div class="col-md-12">
+          <h1 class="text-center">Best Game Deals</h1>
+          <h5 class="text-center">Find your best price for your favorite games</h5>
+          <div class="filters-and-search mb-3">
+            <div class="filter-section">
+              <span class="filter-label">Title:</span>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Find games by name..." id="search-input">
+                <span class="input-group-text" id="search-button">Show</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Store</th>
-            <th scope="col">Savings</th>
-            <th scope="col">Price</th>
-            <th scope="col">Cover</th>
-            <th scope="col">Title</th>
-            <th scope="col">Deal Rating</th>
-            <th scope="col">Release</th>
-            <th scope="col">Reviews</th>
-            <th scope="col">Recent</th>
-          </tr>
-        </thead>
-        <tbody id="games-list-body">
-          <!-- Game deals will be loaded here by JavaScript -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- <div class = "row">
-    <div class="col-md-4">
-      <div class="card" style="width: 18rem;">
-        <img src="../img/menu/ayam geprek.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Ayam Geprek</h5>
-          <p class="card-text">Ayam goreng tepung yang digeprek dengan sambal pedas khas, disajikan dengan nasi hangat.</p>
-          <h5 class="card-title">Rp 15.000,-</h5>
-          <a href="#" class="btn btn-primary">Pesan Sekarang</a>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Store</th>
+                  <th scope="col">Savings</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Cover</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Deal Rating</th>
+                  <th scope="col">Release</th>
+                  <th scope="col">Reviews</th>
+                  <th scope="col">Recent</th>
+                </tr>
+              </thead>
+              <tbody id="games-list-body">
+                <!-- Game deals will be loaded here by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
+      <hr>
     </div>
-</div> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script 
-    src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script 
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="js/script.js"></script>
   </body>
 </html>

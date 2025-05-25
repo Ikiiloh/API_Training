@@ -1,30 +1,47 @@
 $(document).ready(function() {
+    // Function to display error message
+    function displayError(message, isFatal = false) {
+        const errorHtml = `
+            <div class="no-games-message">
+                <p>${message === 'No games found. Please try a different search term.' ? 'No games found :(' : message}</p>
+                ${!isFatal ? '<button class="btn btn-navy mt-3" onclick="location.reload()">Back</button>' : ''}
+            </div>
+        `;
+        $('#games-list-body').html(`
+            <tr>
+                <td colspan="9" class="text-center">
+                    ${errorHtml}
+                </td>
+            </tr>
+        `);
+    }
+
     // Function to display games in a table
     function displayGames(games) {
         const gamesListBody = $('#games-list-body');
         gamesListBody.empty();
 
-        if (games.length === 0) {
-            gamesListBody.html('<tr><td colspan="8" class="text-center">No games found.</td></tr>');
-            return;
+        try {
+            games.forEach(game => {
+                const gameRow = `
+                    <tr>
+                        <td>${game.storeName || 'Unknown Store'}</td>
+                        <td>${Math.round(parseFloat(game.savings || 0))}%</td>
+                        <td>$${parseFloat(game.salePrice || 0).toFixed(2)} <small class="price-original">$${parseFloat(game.normalPrice || 0).toFixed(2)}</small></td>
+                        <td><img src="${game.thumb || 'asset/placeholder.jpg'}" alt="${game.title || 'Game'}" class="game-thumb" onerror="this.src='asset/placeholder.jpg'"></td>
+                        <td><a href="https://www.cheapshark.com/redirect?dealID=${game.dealID || ''}" target="_blank" class="game-title">${game.title || 'Unknown Title'}</a></td>
+                        <td>${game.dealRating || 'N/A'}</td>
+                        <td>${game.releaseDate > 0 ? new Date(game.releaseDate * 1000).toLocaleDateString() : '?'}</td>
+                        <td>${game.metacriticScore !== '0' ? game.metacriticScore : '?'}</td>
+                        <td>${timeSince(game.lastChange * 1000)} ago</td>
+                    </tr>
+                `;
+                gamesListBody.append(gameRow);
+            });
+        } catch (error) {
+            console.error('Error displaying games:', error);
+            displayError('Error displaying games. Please try again.');
         }
-
-        games.forEach(game => {
-            const gameRow = `
-                <tr>
-                    <td>${game.storeName}</td>
-                    <td>${Math.round(parseFloat(game.savings))}%</td>
-                    <td>$${parseFloat(game.salePrice).toFixed(2)} <small class="text-muted"><s>$${parseFloat(game.normalPrice).toFixed(2)}</s></small></td>
-                    <td><img src="${game.thumb}" style="width: 80px; height: auto;"></td>
-                    <td><a href="https://www.cheapshark.com/redirect?dealID=${game.dealID}" target="_blank">${game.title}</a></td>
-                    <td>${game.dealRating}</td>
-                    <td>${game.releaseDate > 0 ? new Date(game.releaseDate * 1000).toLocaleDateString() : '?'}</td>
-                    <td>${game.metacriticScore !== '0' ? game.metacriticScore : '?'}</td>
-                    <td>${timeSince(game.lastChange * 1000)} ago</td>
-                </tr>
-            `;
-            gamesListBody.append(gameRow);
-        });
     }
 
     // Function to calculate time since
@@ -43,54 +60,83 @@ $(document).ready(function() {
         return Math.floor(seconds) + " seconds";
     }
 
-    // Function to load initial deals and store info
+    // Function to process store data
+    function processStoreData(data, storesData) {
+        const storeMap = {};
+        storesData.forEach(store => {
+            if (store.isActive) {
+                storeMap[store.storeID] = { name: store.storeName };
+            }
+        });
+
+        data.forEach(game => {
+            if (storeMap[game.storeID]) {
+                game.storeName = storeMap[game.storeID].name;
+            } else {
+                game.storeName = 'Unknown Store';
+            }
+        });
+
+        displayGames(data);
+    }
+
+    // Function to handle store data error
+    function handleStoreError(data, error) {
+        console.error('Error fetching stores:', error);
+        data.forEach(game => { game.storeName = `Store ID: ${game.storeID}`; });
+        displayGames(data);
+    }
+
+    // Function to handle API error
+    function handleApiError(xhr, status, error, context) {
+        console.error(`Error ${context}:`, error);
+        let errorMessage = `Error ${context}. `;
+        
+        if (status === 'timeout') {
+            errorMessage += 'Request timed out. Please check your internet connection.';
+        } else if (status === 'error') {
+            errorMessage += 'Server error. Please try again later.';
+        } else if (xhr.status === 404) {
+            errorMessage += context === 'searching games' ? 'No results found for your search.' : 'API endpoint not found.';
+        } else if (xhr.status === 403) {
+            errorMessage += 'Access denied. Please try again later.';
+        } else {
+            errorMessage += 'Please try again later.';
+        }
+        
+        displayError(errorMessage, false);
+    }
+
+    // Function to fetch store data
+    function fetchStoreData(data) {
+        $.ajax({
+            url: 'https://www.cheapshark.com/api/1.0/stores',
+            type: 'GET',
+            dataType: 'json',
+            timeout: 10000,
+            success: function(storesData) {
+                processStoreData(data, storesData);
+            },
+            error: function(xhr, status, error) {
+                handleStoreError(data, error);
+            }
+        });
+    }
+
+    // Function to load initial deals
     function loadInitialDeals() {
-        $('#search-input').val(''); // Clear search input
+        $('#search-input').val('');
         $.ajax({
             url: 'https://www.cheapshark.com/api/1.0/deals',
             type: 'GET',
             dataType: 'json',
-            data: {
-                'limit': 60 // show deals initially
-            },
+            data: { 'limit': 60 },
+            timeout: 10000,
             success: function(data) {
-                 // Fetch store information
-                 $.ajax({
-                    url: 'https://www.cheapshark.com/api/1.0/stores',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(storesData) {
-                        // Create a map of store IDs to store names
-                        const storeMap = {};
-                        storesData.forEach(store => {
-                             // Only include active stores
-                            if (store.isActive) {
-                                storeMap[store.storeID] = { name: store.storeName };
-                            }
-                        });
-
-                        // Update games data with store name
-                        data.forEach(game => {
-                            if (storeMap[game.storeID]) {
-                                game.storeName = storeMap[game.storeID].name;
-                            } else {
-                                game.storeName = 'Unknown Store';
-                            }
-                        });
-
-                        displayGames(data); // Display games with store info
-                    },
-                    error: function(xhr, status, error) {
-                         console.error('Error fetching stores:', error);
-                         // Display games without store names if fetching stores fails
-                         data.forEach(game => { game.storeName = `Store ID: ${game.storeID}`; });
-                         displayGames(data);
-                    }
-                 });
+                fetchStoreData(data);
             },
             error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-                $('#games-list-body').html('<tr><td colspan="8" class="text-center"><p class="text-danger">Error loading games. Please try again later.</p></td></tr>');
+                handleApiError(xhr, status, error, 'loading games');
             }
         });
     }
@@ -100,8 +146,8 @@ $(document).ready(function() {
         const searchQuery = $('#search-input').val();
         
         if (!searchQuery) {
-             loadInitialDeals(); // Load initial deals if search is empty
-             return;
+            loadInitialDeals();
+            return;
         }
 
         $.ajax({
@@ -110,46 +156,18 @@ $(document).ready(function() {
             dataType: 'json',
             data: {
                 'title': searchQuery,
-                'limit': 60 // search results
+                'limit': 60
             },
+            timeout: 10000,
             success: function(data) {
-                // Fetch store information
-                 $.ajax({
-                    url: 'https://www.cheapshark.com/api/1.0/stores',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(storesData) {
-                        // Create a map of store IDs to store names
-                        const storeMap = {};
-                        storesData.forEach(store => {
-                             // Only include active stores
-                            if (store.isActive) {
-                                storeMap[store.storeID] = { name: store.storeName };
-                            }
-                        });
-
-                        // Update games data with store name
-                        data.forEach(game => {
-                            if (storeMap[game.storeID]) {
-                                game.storeName = storeMap[game.storeID].name;
-                            } else {
-                                game.storeName = 'Unknown Store';
-                            }
-                        });
-
-                        displayGames(data); // Display games with store info
-                    },
-                    error: function(xhr, status, error) {
-                         console.error('Error fetching stores:', error);
-                         // Display games without store names if fetching stores fails
-                         data.forEach(game => { game.storeName = `Store ID: ${game.storeID}`; });
-                         displayGames(data);
-                    }
-                 });
+                if (!data || data.length === 0) {
+                    displayError('No games found. Please try a different search term.');
+                    return;
+                }
+                fetchStoreData(data);
             },
             error: function(xhr, status, error) {
-                console.error('Error fetching data:', error);
-                $('#games-list-body').html('<tr><td colspan="8" class="text-center"><p class="text-danger">Error loading games. Please try again later.</p></td></tr>');
+                handleApiError(xhr, status, error, 'searching games');
             }
         });
     });
@@ -161,7 +179,7 @@ $(document).ready(function() {
         }
     });
 
-    // Reset page when clicking Games navbar link (now just logo)
+    // Reset page when clicking Games navbar link
     $('.navbar-brand').on('click', function(e) {
         e.preventDefault();
         loadInitialDeals();
