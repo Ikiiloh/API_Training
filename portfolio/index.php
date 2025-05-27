@@ -31,14 +31,12 @@ function get_CURL($url) {
 }
 $ig_data = get_CURL($api_url);
 
-// Contoh akses gambar dari data pertama
-$ig_image = isset($ig_data[0]['image']) ? $ig_data[0]['image'] : '';
-
-// Contoh akses caption dari data pertama
-$ig_caption = isset($ig_data[0]['caption']) ? $ig_data[0]['caption'] : '';
-
 $image_url = isset($ig_data[0]['profilePicUrlHD']) ? $ig_data[0]['profilePicUrlHD'] : ''; // Get the URL from API, or empty if not available
 $base64_image = ''; // Initialize Base64 string as empty
+
+// Get Instagram username and URL
+$ig_username = isset($ig_data[0]['username']) ? $ig_data[0]['username'] : 'Username Error';
+$ig_url = isset($ig_data[0]['url']) ? $ig_data[0]['url'] : '#';
 
 // Check if the API URL is available and try to fetch the image data
 if (!empty($image_url)) {
@@ -162,11 +160,11 @@ if (!empty($image_url)) {
                 <img src="<?php echo $base64_image; ?>" class="img-thumbnail mr-3" style="border-radius: 100px; width: 80px; height: 80px;">
                 <div class="flex-grow-1 text-center">
                   <h5 class="mb-1">
-                    <a href="<?php echo isset($ig_data[0]['url']) ? $ig_data[0]['url'] : '#'; ?>" target="_blank" class="social-username-link" style="text-decoration: none; color: inherit;">
-                      <?php echo isset($ig_data[0]['username']) ? $ig_data[0]['username'] : 'Username Error'; ?>
+                    <a href="<?php echo $ig_url; ?>" target="_blank" class="social-username-link" style="text-decoration: none; color: inherit;">
+                      <?php echo $ig_username; ?>
                     </a>
                   </h5>
-                  <a href="<?php echo isset($ig_data[0]['url']) ? $ig_data[0]['url'] : '#'; ?>" target="_blank" class="btn btn-dark btn-sm mt-2" style="border-radius: 5px">
+                  <a href="<?php echo $ig_url; ?>" target="_blank" class="btn btn-dark btn-sm mt-2" style="border-radius: 5px">
                     <i class="fab fa-instagram"></i> FOLLOW ON INSTAGRAM
                   </a>
                 </div>
