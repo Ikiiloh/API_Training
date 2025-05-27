@@ -413,4 +413,15 @@ body {
 
 .btn-navy:active {
     transform: scale(0.95);
-} 
+}
+
+/* Cegah scroll horizontal pada seluruh halaman */
+html, body {
+    overflow-x: hidden;
+}
+
+/* Izinkan scroll horizontal hanya pada tabel */
+.table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}

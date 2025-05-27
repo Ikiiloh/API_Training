@@ -15,7 +15,7 @@ $(document).ready(function() {
             </tr>
         `);
     }
-
+    
     // Function to display games in a table
     function displayGames(games) {
         const gamesListBody = $('#games-list-body');
@@ -187,4 +187,12 @@ $(document).ready(function() {
 
     // Load initial deals on page load
     loadInitialDeals();
-}); 
+
+    // Play background sound if available
+    const audio = document.getElementById('backsound');
+    if (audio) {
+        audio.play().catch(e => {
+            console.log("Autoplay ditolak, tunggu interaksi:", e);
+        });
+    }
+});
