@@ -101,11 +101,11 @@ body {
     flex-wrap: wrap;
     align-items: center;
     gap: 15px;
+    justify-content: space-between;
 }
 
-.filter-section,
-.filter-options {
-    display: flex;
+.filter-section {
+    display: left;
     align-items: center;
     gap: 10px;
 }
@@ -113,6 +113,10 @@ body {
 .filter-label {
     font-weight: bold;
     color: #555;
+    font-family: 'Pixelify Sans', cursive;
+    min-width: 120px;
+    text-align: right;
+    
 }
 
 .input-group .form-control {
@@ -241,7 +245,11 @@ body {
 
 /* Discount Slider Styles */
 .discount-slider-container {
-    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    min-width: 250px;
 }
 
 .discount-value {
@@ -308,7 +316,6 @@ body {
     animation: musicPulse 2s infinite !important;
 }
 
-
 .site-footer {
     background-color:rgb(5, 5, 71);
     color: #FFFFFF;
@@ -316,6 +323,88 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Pixelify Sans', cursive; 
+}
+
+/* Discount Slider Styles */
+#discount-slider {
+    width: 100%;
+    max-width: 200px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #d1d1d1;
+    outline: none;
+    opacity: 0.8;
+    transition: opacity .2s;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+#discount-slider:hover {
+    opacity: 1;
+}
+
+/* Gaya Thumb (Gagang Slider) untuk WebKit (Chrome, Safari) */
+#discount-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #000080;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+/* Gaya Thumb untuk Firefox */
+#discount-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #000080;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.discount-value {
+    font-weight: bold;
+    color: #290b89;
+    font-family: 'poppins', cursive;
+    min-width: 45px;
+    text-align: right;
+    font-size: 1.1em;
+}
+
+/* Responsive untuk slider */
+@media (max-width: 768px) {
+    .filters-and-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-section {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-label {
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .discount-slider-container {
+        width: 100%;
+        min-width: unset;
+    }
+
+    #discount-slider {
+        max-width: none;
+        flex-grow: 1;
+    }
 }
 
 @keyframes musicPulse {

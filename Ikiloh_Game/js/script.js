@@ -1,7 +1,8 @@
 $(document).ready(function() {
     let isPlaying = false;
+    let allFetchedGames = []; // <-- 1. VARIABEL BARU UNTUK MENYIMPAN SEMUA GAME
 
-    // Function to display error message
+        // Fungsi displayError ...
     function displayError(message, isFatal = false) {
         const errorHtml = `
             <div class="no-games-message">
@@ -16,36 +17,50 @@ $(document).ready(function() {
                 </td>
             </tr>
         `);
+        $('#custom-table-scrollbar').removeClass('visible'); // <-- PASTIKAN SCROLLBAR HILANG
     }
 
-    // Function to display games in a table
+    // Fungsi displayGames ...
     function displayGames(games) {
         const gamesListBody = $('#games-list-body');
         gamesListBody.empty();
 
         try {
-            games.forEach(game => {
-                const gameRow = `
+            if (games.length === 0) {
+                 // Jika tidak ada game (setelah filter), tampilkan pesan khusus
+                 // tapi jangan panggil displayError agar tidak tumpuk
+                 $('#games-list-body').html(`
                     <tr>
-                        <td>${game.storeName || 'Unknown Store'}</td>
-                        <td>${Math.round(parseFloat(game.savings || 0))}%</td>
-                        <td>$${parseFloat(game.salePrice || 0).toFixed(2)} <small class="price-original">$${parseFloat(game.normalPrice || 0).toFixed(2)}</small></td>
-                        <td><img src="${game.thumb || 'https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'}" alt="${game.title || 'Game'}" class="game-thumb" onerror="this.src='https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'"></td>
-                        <td><a href="https://www.cheapshark.com/redirect?dealID=${game.dealID || ''}" target="_blank" class="game-title">${game.title || 'Unknown Title'}</a></td>
-                        <td>${game.dealRating || 'N/A'}</td>
-                        <td>${game.releaseDate > 0 ? new Date(game.releaseDate * 1000).toLocaleDateString() : '?'}</td>
-                        <td>${game.metacriticScore !== '0' ? game.metacriticScore : '?'}</td>
-                        <td>${timeSince(game.lastChange * 1000)} ago</td>
-                    </tr>
-                `;
-                gamesListBody.append(gameRow);
-            });
+                        <td colspan="9" class="text-center">
+                           <div class="no-games-message">
+                               <p>No games match your current filter.</p>
+                           </div>
+                        </td>
+                    </tr>`);
+            } else {
+                games.forEach(game => {
+                    const gameRow = `
+                        <tr>
+                            <td>${game.storeName || 'Unknown Store'}</td>
+                            <td>${Math.round(parseFloat(game.savings || 0))}%</td>
+                            <td>$${parseFloat(game.salePrice || 0).toFixed(2)} <small class="price-original">$${parseFloat(game.normalPrice || 0).toFixed(2)}</small></td>
+                            <td><img src="${game.thumb || 'https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'}" alt="${game.title || 'Game'}" class="game-thumb" onerror="this.src='https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'"></td>
+                            <td><a href="https://www.cheapshark.com/redirect?dealID=${game.dealID || ''}" target="_blank" class="game-title">${game.title || 'Unknown Title'}</a></td>
+                            <td>${game.dealRating || 'N/A'}</td>
+                            <td>${game.releaseDate > 0 ? new Date(game.releaseDate * 1000).toLocaleDateString() : '?'}</td>
+                            <td>${game.metacriticScore !== '0' ? game.metacriticScore : '?'}</td>
+                            <td>${timeSince(game.lastChange * 1000)} ago</td>
+                        </tr>
+                    `;
+                    gamesListBody.append(gameRow);
+                });
+            }
         } catch (error) {
             console.error('Error displaying games:', error);
             displayError('Error displaying games. Please try again.');
         }
+        updateCustomScrollbar(); // <-- PANGGIL UPDATE SCROLLBAR DI SINI
     }
-
     // Function to calculate time since
     function timeSince(date) {
         const seconds = Math.floor((new Date() - date) / 1000);
@@ -62,7 +77,7 @@ $(document).ready(function() {
         return Math.floor(seconds) + " seconds";
     }
 
-    // Function to process store data
+    // Fungsi processStoreData ...
     function processStoreData(data, storesData) {
         const storeMap = {};
         storesData.forEach(store => {
@@ -79,14 +94,17 @@ $(document).ready(function() {
             }
         });
 
-        displayGames(data);
+        allFetchedGames = data; // <-- 2. SIMPAN DATA ASLI
+        
+        applyFiltersAndDisplay(); // <-- PANGGIL FUNGSI FILTER BARU
     }
 
-    // Function to handle store data error
+    // Fungsi handleStoreError ... (ubah displayGames menjadi applyFiltersAndDisplay)
     function handleStoreError(data, error) {
         console.error('Error fetching stores:', error);
         data.forEach(game => { game.storeName = `Store ID: ${game.storeID}`; });
-        displayGames(data);
+        allFetchedGames = data;
+        applyFiltersAndDisplay();
     }
 
     // Function to handle API error
@@ -132,7 +150,6 @@ $(document).ready(function() {
             url: 'https://www.cheapshark.com/api/1.0/deals',
             type: 'GET',
             dataType: 'json',
-            data: { 'limit': 60 },
             timeout: 10000,
             success: function(data) {
                 fetchStoreData(data);
@@ -158,7 +175,6 @@ $(document).ready(function() {
             dataType: 'json',
             data: {
                 'title': searchQuery,
-                'limit': 60
             },
             timeout: 10000,
             success: function(data) {
@@ -185,6 +201,50 @@ $(document).ready(function() {
     $('.navbar-brand').on('click', function(e) {
         e.preventDefault();
         loadInitialDeals();
+    });
+
+        // == 3. FUNGSI FILTER BARU ==
+    // ==========================================================
+    function applyFiltersAndDisplay() {
+        const minDiscount = parseInt($('#discount-slider').val(), 10);
+
+        const filteredGames = allFetchedGames.filter(game => {
+            const savings = Math.round(parseFloat(game.savings || 0));
+            return savings >= minDiscount;
+        });
+
+        // Jika hasil fetch asli 0 (error atau no result), biarkan displayError yg handle.
+        // Jika hasil fetch ada tapi filter 0, tampilkan pesan.
+        if (filteredGames.length === 0 && allFetchedGames.length > 0) {
+             $('#games-list-body').html(`
+                <tr>
+                    <td colspan="9" class="text-center">
+                       <div class="no-games-message">
+                           <p>No games found with ${minDiscount}% discount or higher.</p>
+                           <button class="btn btn-navy mt-3" id="reset-filters">Reset Filters</button>
+                       </div>
+                    </td>
+                </tr>`);
+             $('#custom-table-scrollbar').removeClass('visible');
+        } else {
+            displayGames(filteredGames);
+        }
+    }
+
+    // ==========================================================
+    // == 4. EVENT LISTENER UNTUK SLIDER ==
+    // ==========================================================
+    $('#discount-slider').on('input', function() {
+        const value = $(this).val();
+        $('#discount-value').text(value + '%');
+        applyFiltersAndDisplay(); // Panggil filter setiap kali slider digerakkan
+    });
+
+    // Event listener untuk tombol reset (opsional, jika ingin)
+    $(document).on('click', '#reset-filters', function() {
+        $('#discount-slider').val(0);
+        $('#discount-value').text('0%');
+        loadInitialDeals(); // Muat ulang data awal
     });
 
     loadInitialDeals(); 

@@ -35,13 +35,21 @@
           <h5 class="text-center">Find your best price for your favorite games</h5>
           <div class="filters-and-search mb-3">
             <div class="filter-section">
-              <span class="filter-label font-awesome">Search:</span>
+              <span class="filter-label">Find Games:</span>
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Find games by name..." id="search-input">
                 <span class="input-group-text" id="search-button">Show</span>
               </div>
             </div>
-          </div>
+
+            <div class="filter-section">
+                <span class="filter-label">Min. Discount:</span>
+                <div class="discount-slider-container">
+                    <input type="range" min="0" max="100" value="0" step="5" id="discount-slider">
+                    <span id="discount-value" class="discount-value">0%</span>
+                </div>
+            </div>
+            </div>
         </div>
       </div>
       
