@@ -87,7 +87,7 @@ if (!empty($image_url)) {
               <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#portfolio">Portfolio</a>
+              <a class="nav-link" href="#portfolio">Repository</a>
             </li>
           </ul>
         </div>
@@ -97,12 +97,18 @@ if (!empty($image_url)) {
 
     <div class="jumbotron" id="home">
       <div class="container">
-        <div class="text-center">
-          <img src="img/profile_gigup.jpeg" class="img-thumbnail" style="border-radius: 100px; width: 300px; height: 300px;">
-          <h1 class="display-4">
-  <?php echo isset($ig_data[0]['fullName']) ? $ig_data[0]['fullName'] : 'Nama Tidak Ditemukan'; ?>
-</h1>
-          <h3 class="lead">Student | Beginner Programmer</h3>
+        <div class="row align-items-center">
+          <div class="col-md-4 text-center">
+            <img src="img/profile_gigup.jpeg" class="img-thumbnail profile-image rounded-circle" style="width: 250px; height: 250px;">
+          </div>
+          <div class="col-md-8">
+            <h1 class="display-4 text-center font-weight-bold">
+              <?php echo isset($ig_data[0]['fullName']) ? $ig_data[0]['fullName'] : 'Nama Tidak Ditemukan'; ?>
+            </h1>
+            <h2 class="lead text-center font-weight-bold">Student | Beginner Programmer</h2>
+              <p class="text-justify">I'm a junior developer from Indonesia, currently learning web development, API integration, Python, and JavaScript. I'm working on personal projects and uni tasks, exploring GitHub Actions and automation.   
+              I love coding at night 🌙 and open to collaborate on web and data projects. </p>
+          </div>
         </div>
       </div>
     </div>
@@ -110,18 +116,43 @@ if (!empty($image_url)) {
 
     <!-- About -->
     <section class="about" id="about">
-      <div class="container">
+      <div class="container py-1">
         <div class="row mb-4">
-          <div class="col text-center">
-            <h2>About</h2>
+          <div class="col text-center font-weight-bold">
+            <h2>About Me</h2>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col-md-5">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, molestiae sunt doloribus error ullam expedita cumque blanditiis quas vero, qui, consectetur modi possimus. Consequuntur optio ad quae possimus, debitis earum.</p>
-          </div>
-          <div class="col-md-5">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, molestiae sunt doloribus error ullam expedita cumque blanditiis quas vero, qui, consectetur modi possimus. Consequuntur optio ad quae possimus, debitis earum.</p>
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-8">
+            <div class="card shadow" style="border-radius: 15px;">
+              <div class="card-body">
+                <div class="mb-4">
+                  <h5>🛠️ Languages & Tools:</h5>
+                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
+                    <img src="https://img.shields.io/badge/JavaScript-F0DB4F?style=for-the-badge&logo=javascript&logoColor=black"/>
+                    <img src="https://img.shields.io/badge/Python-306998?style=for-the-badge&logo=python&logoColor=white"/>
+                    <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
+                    <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <h5>📈 GitHub Stats:</h5>
+                  <div class="text-center">
+                    <img src="https://github-readme-stats.vercel.app/api?username=ikiiloh&show_icons=true&theme=github_dark" alt="ikiiloh" style="max-width: 100%;" />
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <h2>📫 Connect with me:</h2>
+                  <p>
+                    📧 Email: <a href="mailto:senga8818@gmail.com">senga8818@gmail.com</a><br>
+                    💼 LinkedIn: <a href="https://www.linkedin.com/in/m-riski-ramadani-144449201/" target="_blank">My LinkedIn</a>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -131,23 +162,23 @@ if (!empty($image_url)) {
      <section class="social bg-light py-5" id="social">
       <div class="container">
         <div class="row">
-          <div class="col text-center">
+          <div class="col text-center font-weight-bold">
             <h2 class="mt-3"> Social Media </h2>
             <br>
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
-            <div class="card w-100 shadow" style="border-radius: 30px; max-width: 400px;">
+            <div class="card w-100 shadow social-card">
               <div class="card-body d-flex align-items-center">
-                <img src="https://github.com/<?php echo $user_data['login']; ?>.png" class="img-thumbnail mr-3" style="border-radius: 100px; width: 80px; height: 80px;">
+                <img src="https://github.com/<?php echo $user_data['login']; ?>.png" class="img-thumbnail mr-3 social-profile-image">
                 <div class="flex-grow-1 text-center">
                   <h5 class="mb-1">
-                    <a href="https://github.com/<?php echo $user_data['login']; ?>" target="_blank" class="social-username-link" style="text-decoration: none; color: inherit;">
+                    <a href="https://github.com/<?php echo $user_data['login']; ?>" target="_blank" class="social-username-link">
                       <?php echo $user_data['login']; ?>
                     </a>
                   </h5>
-                  <a href="https://github.com/<?php echo $user_data['login']; ?>" target="_blank" class="btn btn-dark btn-sm mt-2"style="border-radius: 5px">
+                  <a href="https://github.com/<?php echo $user_data['login']; ?>" target="_blank" class="btn btn-dark btn-sm mt-2">
                     <i class="fab fa-github"></i> FOLLOW ON GITHUB
                   </a>
                 </div>
@@ -155,16 +186,16 @@ if (!empty($image_url)) {
             </div>
           </div>
           <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
-            <div class="card w-100 shadow" style="border-radius: 30px; max-width: 400px;">
+            <div class="card w-100 shadow social-card">
               <div class="card-body d-flex align-items-center">
-                <img src="<?php echo $base64_image; ?>" class="img-thumbnail mr-3" style="border-radius: 100px; width: 80px; height: 80px;">
+                <img src="<?php echo $base64_image; ?>" class="img-thumbnail mr-3 social-profile-image">
                 <div class="flex-grow-1 text-center">
                   <h5 class="mb-1">
-                    <a href="<?php echo $ig_url; ?>" target="_blank" class="social-username-link" style="text-decoration: none; color: inherit;">
+                    <a href="<?php echo $ig_url; ?>" target="_blank" class="social-username-link">
                       <?php echo $ig_username; ?>
                     </a>
                   </h5>
-                  <a href="<?php echo $ig_url; ?>" target="_blank" class="btn btn-dark btn-sm mt-2" style="border-radius: 5px">
+                  <a href="<?php echo $ig_url; ?>" target="_blank" class="btn btn-dark btn-sm mt-2">
                     <i class="fab fa-instagram"></i> FOLLOW ON INSTAGRAM
                   </a>
                 </div>
@@ -176,24 +207,23 @@ if (!empty($image_url)) {
      </section>
 
 
-    <!-- Portfolio -->
+    <!-- Repo -->
     <section class="portfolio " id="portfolio">
       <div class="container">
         <div class="row pt-4 mb-4">
-          <div class="col text-center">
-            <h2>Portfolio</h2>
+          <div class="col text-center font-weight-bold">
+            <h2>My Repository</h2>
           </div>
         </div>
-        <div class="row">
+        <div class="row d-flex align-items-stretch justify-content-center">
           <?php if (!empty($repos_data)): // Check if repository data is available ?>
               <?php foreach ($repos_data as $repo): // Loop through each repository ?>
-                  <div class="col-md mb-4">
-                      <div class="card w-100 shadow" style="border-radius: 10px; max-width: 400px;">
-                          <!-- Removed image tag -->
-                          <div class="card-body">
+                  <div class="col-md-4 mb-4">
+                      <div class="card w-100 shadow h-100 portfolio-card">
+                          <div class="card-body d-flex flex-column">
                               <h5 class="card-title"><?php echo htmlspecialchars($repo['name']); ?></h5>
-                              <p class="card-text"><?php echo htmlspecialchars($repo['description'] ?? 'No description available.'); ?></p>
-                              <a href="<?php echo htmlspecialchars($repo['html_url']); ?>" target="_blank" class="btn btn-dark btn-sm mt-2" style="border-radius: 5px">View on GitHub</a>
+                              <p class="card-text flex-grow-1"><?php echo htmlspecialchars($repo['description'] ?? 'No description available.'); ?></p>
+                              <a href="<?php echo htmlspecialchars($repo['html_url']); ?>" target="_blank" class="btn btn-dark btn-sm mt-2">View on GitHub</a>
                           </div>
                       </div>
                   </div>
@@ -208,60 +238,12 @@ if (!empty($image_url)) {
     </section>
 
 
-    <!-- Contact -->
-    <section class="contact bg-light" id="contact">
-      <div class="container">
-        <div class="row pt-4 mb-4">
-          <div class="col text-center">
-            <h2>Contact</h2>
-          </div>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-lg-4">
-            <div class="card w-100 shadow bg-dark text-white" style="border-top-left-radius: 20px; border-top-right-radius: 0px; border-bottom-left-radius: 0px; border-bottom-right-radius: 20px; max-width: 400px;">
-              <div class="card-body">
-                <h5 class="card-title-centre">Contact Me</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-
-          <div class="col-lg-6 mt-4">
-            
-            <form>
-              <div class="form-group">
-                <label for="nama">Nama</label>
-                <input type="text" class="form-control" id="nama">
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" id="email">
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="text" class="form-control" id="phone">
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea class="form-control" id="message" rows="3"></textarea>
-              </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-dark btn-sm mt-2" style="border-radius: 5px">Send Message</button>
-              </div>
-            </form>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-
     <!-- footer -->
     <footer class="bg-dark text-white mt-5">
       <div class="container">
         <div class="row">
           <div class="col text-center">
-            <p>Copyright &copy; 2018.</p>
+            <p>Ikiiloh &copy; 2025.</p>
           </div>
         </div>
       </div>

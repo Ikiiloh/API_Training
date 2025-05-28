@@ -2,10 +2,6 @@ body {
     margin-top: 50px;
 }
 
-.jumbotron img {
-    width: 25%;
-}
-
 section {
     min-height: 420px;
 }
@@ -13,4 +9,45 @@ section {
 footer {
     min-height: 50px;
     padding-top:12px;
+}
+
+
+
+/* Profile Image Styles */
+.profile-image {
+    border: 3px solid #343a40;
+}
+
+/* Social Media Profile Images */
+.social-profile-image {
+    border-radius: 100px;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #343a40;
+}
+
+/* Card Styles */
+.about-card {
+    border-radius: 15px;
+}
+
+.social-card {
+    border-radius: 30px;
+    max-width: 400px;
+}
+
+.portfolio-card {
+    border-radius: 10px;
+    max-width: 400px;
+}
+
+/* Button Styles */
+.btn-dark {
+    border-radius: 5px;
+}
+
+/* Social Username Link */
+.social-username-link {
+    text-decoration: none;
+    color: inherit;
 }
