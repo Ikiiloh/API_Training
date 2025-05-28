@@ -7,6 +7,17 @@ h1, h2 {
     color: #980303;
 }
 
+.input-group-text {
+    background-color: #000080;
+    color: #FFFFFF;
+    border: 1px solid #000080;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Pixelify Sans', cursive;
+    margin-left: 0;
+}
+
 h3, h4, h5, h6, th {
     font-family: 'Pixelify Sans', cursive;
     color: #290b89;
@@ -105,15 +116,8 @@ body {
 }
 
 .input-group .form-control {
-    border-color: #ced4da;
-}
-
-.input-group-text {
-    background-color: #000080;
-    color: #E0E0E0;
-    border: 1px solid #000080;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border-color: #000080;
+    border-radius: 8px 0 0 8px;
 }
 
 .input-group-text:hover {
@@ -121,9 +125,23 @@ body {
     color: #FFFFFF;
 }
 
+.form-control {
+    font-family: 'Pixelify Sans', cursive;
+    border: 2px solid #000080;
+    border-radius: 4px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
 .form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #0000a0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 128, 0.25);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    font-family: 'Pixelify Sans', cursive;
 }
 
 .form-check-label {
@@ -229,6 +247,105 @@ body {
 .discount-value {
     font-weight: bold;
     color: #28a745;
+}
+
+/* Music Control Button Styles - IMPROVED */
+.music-control-btn {
+    position: fixed !important; /* Membuat posisi tetap di layar */
+    bottom: 25px !important; /* Jarak dari bawah */
+    right: 25px !important; /* Jarak dari kanan */
+    width: 60px !important; /* Lebar tombol */
+    height: 60px !important; /* Tinggi tombol */
+    border-radius: 50% !important; /* Membuatnya bulat */
+    background: linear-gradient(135deg,rgba(0, 0, 128, 0.8),rgba(0, 0, 160, 0.42)) !important; /* Warna gradien */
+    color: #FFFFFF !important; /* Warna ikon */
+    border: 3px solid rgba(255, 255, 255, 0.2) !important; /* Border transparan */
+    cursor: pointer !important; /* Menunjukkan bisa diklik */
+    display: flex !important; /* Agar ikon bisa di tengah */
+    align-items: center !important; /* Tengah secara vertikal */
+    justify-content: center !important; /* Tengah secara horizontal */
+    font-size: 22px !important; /* Ukuran ikon */
+    box-shadow: 0 8px 25px rgba(0, 0, 128, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Efek bayangan */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Transisi halus */
+    z-index: 9999 !important; /* Memastikan tombol di atas elemen lain */
+    backdrop-filter: blur(10px) !important; /* Efek blur (jika didukung) */
+    -webkit-backdrop-filter: blur(10px) !important; /* Efek blur untuk Safari */
+}
+
+.music-control-btn:hover {
+    background: linear-gradient(135deg, #0000a0, #0000c0) !important;
+    transform: scale(1.1) translateY(-2px) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 128, 0.5), 0 6px 15px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.music-control-btn:active {
+    transform: scale(0.95) !important;
+    transition: all 0.1s ease !important;
+}
+
+.music-control-btn.muted { /* Gaya saat musik OFF */
+    background: linear-gradient(135deg,rgba(220, 53, 70, 0.8),rgba(200, 35, 51, 0.42)) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.music-control-btn.muted:hover {
+    background: linear-gradient(135deg, #c82333, #a71e2a) !important;
+    box-shadow: 0 12px 35px rgba(220, 53, 69, 0.5), 0 6px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+.music-control-btn i {
+    transition: all 0.3s ease !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.music-control-btn:hover i {
+    transform: scale(1.1) !important;
+}
+
+/* Pulse animation for when music is playing */
+.music-control-btn.playing {
+    animation: musicPulse 2s infinite !important;
+}
+
+
+.site-footer {
+    background-color:rgb(5, 5, 71);
+    color: #FFFFFF;
+    border: 1px solid #000080;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Pixelify Sans', cursive; 
+}
+
+@keyframes musicPulse {
+    0%, 100% {
+        box-shadow: 0 8px 25px rgba(0, 0, 128, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(0, 0, 128, 0.7);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(0, 0, 128, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(0, 0, 128, 0);
+    }
+}
+
+/* Responsive adjustments (sudah ada di kode Anda dan bagus) */
+@media (max-width: 768px) {
+    .music-control-btn {
+        width: 50px !important;
+        height: 50px !important;
+        bottom: 50px !important;
+        right: 20px !important;
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-control-btn {
+        width: 45px !important;
+        height: 45px !important;
+        bottom: 50px !important;
+        right: 15px !important;
+        font-size: 16px !important;
+    }
 }
 
 /* Responsive Styles */
@@ -351,10 +468,24 @@ body {
 
     .form-control {
         font-size: 0.9rem;
+        padding: 6px 10px;
     }
 
     .input-group-text {
-        padding: 0.375rem 0.75rem;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .input-group-text {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .form-control {
+        padding: 4px 8px;
+        font-size: 0.8rem;
     }
 }
 
@@ -424,4 +555,60 @@ html, body {
 .table-responsive {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
+}
+
+/* Custom Floating Scrollbar Styles */
+.custom-scrollbar-container {
+    display: none; /* Sembunyikan secara default */
+    position: fixed;
+    bottom: 10px; /* Posisikan di atas tombol musik (sesuaikan jika perlu) */
+    left: 15px;
+    right: 15px;
+    height: 12px;
+    background-color: rgba(0, 0, 0, 0.15); /* Warna track scrollbar */
+    border-radius: 6px;
+    z-index: 9997; /* Sedikit di bawah tombol musik */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    -webkit-backdrop-filter: blur(5px); /* Efek blur ringan */
+    backdrop-filter: blur(5px);
+}
+
+.custom-scrollbar-container.visible {
+    display: block; /* Tampilkan jika visible */
+    opacity: 1; /* Buat terlihat */
+}
+
+.custom-scrollbar-thumb {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 10px;
+    background-color: #000080; /* Warna thumb (sesuaikan dengan tema) */
+    border-radius: 5px;
+    cursor: grab; /* Kursor saat bisa digeser */
+    min-width: 30px; /* Lebar minimum thumb */
+    transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar-thumb:active {
+    cursor: grabbing; /* Kursor saat sedang digeser */
+    background-color: #0000a0; /* Warna saat aktif */
+}
+
+/* Hanya tampilkan di mobile (sesuaikan breakpoint jika perlu) */
+@media (max-width: 768px) {
+    .custom-scrollbar-container.should-display { /* Gunakan kelas ini untuk mengontrol kapan ia bisa muncul */
+         display: block;
+    }
+    .custom-scrollbar-container.should-display.visible {
+        opacity: 1;
+    }
+}
+
+/* Sembunyikan jika layar lebih lebar */
+@media (min-width: 769px) {
+    .custom-scrollbar-container {
+        display: none !important;
+    }
 }

@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    let isPlaying = false;
+
     // Function to display error message
     function displayError(message, isFatal = false) {
         const errorHtml = `
@@ -15,7 +17,7 @@ $(document).ready(function() {
             </tr>
         `);
     }
-    
+
     // Function to display games in a table
     function displayGames(games) {
         const gamesListBody = $('#games-list-body');
@@ -28,7 +30,7 @@ $(document).ready(function() {
                         <td>${game.storeName || 'Unknown Store'}</td>
                         <td>${Math.round(parseFloat(game.savings || 0))}%</td>
                         <td>$${parseFloat(game.salePrice || 0).toFixed(2)} <small class="price-original">$${parseFloat(game.normalPrice || 0).toFixed(2)}</small></td>
-                        <td><img src="${game.thumb || 'asset/placeholder.jpg'}" alt="${game.title || 'Game'}" class="game-thumb" onerror="this.src='asset/placeholder.jpg'"></td>
+                        <td><img src="${game.thumb || 'https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'}" alt="${game.title || 'Game'}" class="game-thumb" onerror="this.src='https://via.placeholder.com/80x100/6c757d/FFFFFF?text=NO+IMG'"></td>
                         <td><a href="https://www.cheapshark.com/redirect?dealID=${game.dealID || ''}" target="_blank" class="game-title">${game.title || 'Unknown Title'}</a></td>
                         <td>${game.dealRating || 'N/A'}</td>
                         <td>${game.releaseDate > 0 ? new Date(game.releaseDate * 1000).toLocaleDateString() : '?'}</td>
@@ -91,7 +93,7 @@ $(document).ready(function() {
     function handleApiError(xhr, status, error, context) {
         console.error(`Error ${context}:`, error);
         let errorMessage = `Error ${context}. `;
-        
+
         if (status === 'timeout') {
             errorMessage += 'Request timed out. Please check your internet connection.';
         } else if (status === 'error') {
@@ -103,7 +105,7 @@ $(document).ready(function() {
         } else {
             errorMessage += 'Please try again later.';
         }
-        
+
         displayError(errorMessage, false);
     }
 
@@ -144,7 +146,7 @@ $(document).ready(function() {
     // Search functionality
     $('#search-button').on('click', function() {
         const searchQuery = $('#search-input').val();
-        
+
         if (!searchQuery) {
             loadInitialDeals();
             return;
@@ -185,14 +187,175 @@ $(document).ready(function() {
         loadInitialDeals();
     });
 
-    // Load initial deals on page load
-    loadInitialDeals();
+    loadInitialDeals(); 
 
-    // Play background sound if available
+    // IMPROVED Music Control Functionality
     const audio = document.getElementById('backsound');
-    if (audio) {
-        audio.play().catch(e => {
-            console.log("Autoplay ditolak, tunggu interaksi:", e);
+    const musicControlBtn = document.getElementById('music-control');
+
+    // Fungsi untuk memperbarui tampilan dan status tombol
+    function updateMusicButtonState() {
+        if (isPlaying) {
+            musicControlBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; // Ikon saat musik ON
+            musicControlBtn.classList.remove('muted');
+            musicControlBtn.classList.add('playing');
+            musicControlBtn.title = 'Pause Music';
+        } else {
+            musicControlBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; // Ikon saat musik OFF
+            musicControlBtn.classList.remove('playing');
+            musicControlBtn.classList.add('muted');
+            musicControlBtn.title = 'Play Music';
+        }
+    }
+
+    // Fungsi untuk toggle (mengubah) status play/pause
+    function toggleMusic() {
+        if (isPlaying) {
+            audio.pause();
+            // isPlaying akan diubah oleh event 'onpause'
+        } else {
+            // Mencoba memainkan audio dan menangani jika gagal (misal: browser blokir)
+            audio.play().catch(error => {
+                console.warn("Music play failed, possibly due to browser policy:", error);
+                isPlaying = false; // Pastikan status kembali false jika gagal play
+                updateMusicButtonState();
+            });
+            // isPlaying akan diubah oleh event 'onplay'
+        }
+    }
+
+    // Menambahkan event listener ke tombol
+    musicControlBtn.addEventListener('click', toggleMusic);
+
+    // Menambahkan event listener ke audio untuk sinkronisasi status
+    audio.onplay = () => {
+        isPlaying = true;
+        updateMusicButtonState();
+    };
+
+    audio.onpause = () => {
+        isPlaying = false;
+        updateMusicButtonState();
+    };
+
+    // Mencoba autoplay saat halaman dimuat (mungkin diblokir browser)
+    let playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Autoplay berhasil
+            console.log("Audio is playing automatically.");
+        }).catch(error => {
+            // Autoplay gagal/diblokir, tunggu klik pengguna
+            console.warn("Autoplay was prevented. Waiting for user interaction.");
+            audio.pause(); // Pastikan dalam status pause
         });
     }
-});
+
+    // Set status awal tombol berdasarkan keadaan audio saat ini
+    isPlaying = !audio.paused;
+    updateMusicButtonState();
+
+    // == CUSTOM FLOATING SCROLLBAR LOGIC ==
+    const tableContainer = $('.table-responsive');
+    const customScrollbar = $('#custom-table-scrollbar');
+    const customThumb = $('.custom-scrollbar-thumb');
+
+    let isDragging = false;
+    let startX;
+    let scrollLeftStart;
+
+    function updateCustomScrollbar() {
+        // Hanya jalankan jika elemen ada & kita di mobile view (atau jika tabel bisa scroll)
+        if (tableContainer.length === 0 || customScrollbar.length === 0 || window.innerWidth > 768) {
+             customScrollbar.removeClass('visible should-display');
+             return;
+        }
+
+        const scrollWidth = tableContainer[0].scrollWidth;
+        const clientWidth = tableContainer[0].clientWidth;
+
+        // Cek apakah tabel bisa di-scroll
+        if (scrollWidth > clientWidth) {
+            customScrollbar.addClass('should-display'); // Tandai bahwa ia boleh muncul
+            customScrollbar.addClass('visible'); // Tampilkan
+
+            const scrollbarWidth = customScrollbar.width();
+            let thumbWidth = (clientWidth / scrollWidth) * scrollbarWidth;
+            thumbWidth = Math.max(thumbWidth, 30); // Pastikan thumb tidak terlalu kecil
+
+            const maxScrollLeft = scrollWidth - clientWidth;
+            const maxThumbLeft = scrollbarWidth - thumbWidth;
+
+            // Hindari pembagian dengan nol jika maxScrollLeft = 0
+            const thumbPos = (maxScrollLeft > 0)
+                           ? (tableContainer[0].scrollLeft / maxScrollLeft) * maxThumbLeft
+                           : 0;
+
+            customThumb.css({
+                'width': thumbWidth + 'px',
+                'left': thumbPos + 'px'
+            });
+
+        } else {
+            customScrollbar.removeClass('visible'); // Sembunyikan jika tidak bisa scroll
+            // Biarkan 'should-display' jika masih di mobile, atau hapus jika perlu
+        }
+    }
+
+    // Panggil saat tabel di-scroll
+    tableContainer.on('scroll', function() {
+        if (!isDragging) { // Hanya update jika bukan karena drag kita
+            updateCustomScrollbar();
+        }
+    });
+
+    // Panggil saat ukuran window berubah
+    $(window).on('resize', updateCustomScrollbar);
+
+    // Fungsi Drag untuk Thumb
+    customThumb.on('mousedown touchstart', function(e) {
+        if(window.innerWidth > 768) return; // Jangan aktifkan drag di desktop
+
+        isDragging = true;
+        const touch = e.originalEvent.touches ? e.originalEvent.touches[0] : e;
+        startX = touch.pageX - customThumb.position().left;
+        $('body').css({'user-select': 'none', 'cursor': 'grabbing'}); // Cegah seleksi teks & ubah kursor
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $(document).on('mousemove touchmove', function(e) {
+        if (!isDragging || window.innerWidth > 768) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        const touch = e.originalEvent.touches ? e.originalEvent.touches[0] : e;
+        const x = touch.pageX;
+        const scrollbarOffsetLeft = customScrollbar.offset().left;
+        const scrollbarWidth = customScrollbar.width();
+        const thumbWidth = customThumb.width();
+
+        let newLeft = x - scrollbarOffsetLeft - startX;
+
+        // Batasi pergerakan thumb
+        newLeft = Math.max(0, newLeft); // Tidak boleh < 0
+        newLeft = Math.min(newLeft, scrollbarWidth - thumbWidth); // Tidak boleh > max
+
+        customThumb.css('left', newLeft + 'px');
+
+        // Update scroll tabel berdasarkan posisi thumb
+        const scrollRatio = newLeft / (scrollbarWidth - thumbWidth);
+        const newScrollLeft = scrollRatio * (tableContainer[0].scrollWidth - tableContainer[0].clientWidth);
+        tableContainer[0].scrollLeft = newScrollLeft;
+    });
+
+    $(document).on('mouseup touchend', function() {
+        if (isDragging) {
+            isDragging = false;
+            $('body').css({'user-select': '', 'cursor': ''});
+        }
+    });
+
+    setTimeout(updateCustomScrollbar, 500); // Beri sedikit jeda agar tabel sempat render
+
+}); // Penutup $(document).ready
