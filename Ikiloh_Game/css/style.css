@@ -211,7 +211,7 @@ body {
 
 /* Game Image Styles */
 .game-thumb {
-    width: 80px;
+    width: 120px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -405,6 +405,12 @@ body {
         max-width: none;
         flex-grow: 1;
     }
+
+    /* Game image adjustments */
+    .game-thumb {
+        width: 100px;
+        height: auto;
+    }
 }
 
 @keyframes musicPulse {
@@ -434,6 +440,10 @@ body {
         bottom: 50px !important;
         right: 15px !important;
         font-size: 16px !important;
+    }
+
+    .game-thumb {
+        width: 80px;
     }
 }
 
@@ -476,12 +486,6 @@ body {
         padding: 0.5rem;
     }
 
-    /* Game image adjustments */
-    .game-thumb {
-        width: 50px;
-        height: auto;
-    }
-
     /* Text adjustments */
     h1 {
         font-size: 1.5rem;
@@ -520,7 +524,7 @@ body {
     }
 
     .game-thumb {
-        width: 40px;
+        width: 80px;
     }
 
     .table th,
