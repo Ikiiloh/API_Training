@@ -1,53 +1,230 @@
 body {
     margin-top: 50px;
+    background-color: #0a2342;
+    color: #E0E0E0;
 }
 
 section {
     min-height: 420px;
+    background-color: rgba(255, 255, 255, 0.72);
+    padding: 20px 0;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 footer {
     min-height: 50px;
-    padding-top:12px;
+    padding-top: 12px;
+    background-color:rgba(0, 0, 128, 0.5) !important;
+    border-top: 2px solid #E0E0E0;
 }
 
-
-
-/* Profile Image Styles */
-.profile-image {
-    border: 3px solid #343a40;
+/* Typography */
+h1, h2 {
+    font-family: 'Press Start 2P', system-ui;
+    color:rgb(200, 0, 0);
 }
 
-/* Social Media Profile Images */
-.social-profile-image {
-    border-radius: 100px;
-    width: 80px;
-    height: 80px;
-    border: 3px solid #343a40;
+h3, h4, h5, h6 {
+    font-family: 'Pixelify Sans', cursive;
+    color:rgb(255, 255, 255);
+}
+
+p {
+    font-family: 'Pixelify Sans', cursive;
+    color: #000080;
+}
+
+.contact-info {
+    color: #FFFFFF;
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.contact-info a {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #ff0000;
+    text-decoration: underline;
+}
+
+/* Navbar Styles */
+.navbar {
+    background:rgba(0, 0, 128, 0.5) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand {
+    color: #ff0000 !important;
+    font-family: 'Press Start 2P', system-ui;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #ff3333 !important;
+    transform: scale(1.05);
+}
+
+.nav-link {
+    color: #E0E0E0 !important;
+    font-family: 'Press Start 2P', system-ui;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ff0000 !important;
+    transform: scale(1.05);
+}
+
+/* Jumbotron Styles */
+.jumbotron {
+    background-color: #ffffff;
+    border-bottom: 2px solid #000080;
+    margin-bottom: 0;
 }
 
 /* Card Styles */
-.about-card {
+.card {
+    background-color: #1a2b3c;
+    border: 2px solid #000080;
     border-radius: 15px;
+    transition: all 0.3s ease;
 }
 
+/* About Section Card */
+.about .card {
+    background-color:rgba(26, 43, 60, 0.8);
+    border: 2px solid #000080;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Social Media Cards */
 .social-card {
+    background-color: #1a2b3c;
+    border: 2px solid #000080;
     border-radius: 30px;
     max-width: 400px;
+    transition: transform 0.3s ease;
 }
 
+.social-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Portfolio Cards */
 .portfolio-card {
-    border-radius: 10px;
+    background-color: #1a2b3c;
+    border: 2px solid #000080;
+    border-radius: 15px;
     max-width: 400px;
+    transition: transform 0.3s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Content Styles */
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: #FFFFFF;
+    font-family: 'Press Start 2P', system-ui;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    color: #E0E0E0;
+    font-family: 'Pixelify Sans', cursive;
 }
 
 /* Button Styles */
 .btn-dark {
-    border-radius: 5px;
+    background-color: #000080;
+    border: 2px solid #E0E0E0;
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.btn-dark:hover {
+    background-color: #0000a0;
+    transform: scale(1.05);
+}
+
+/* Profile Image Styles */
+.profile-image {
+    border: 5px solid #000080
+}
+
+.social-profile-image {
+    border-radius: 100px;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #000080;
+    background-color: #1a2b3c;
+}
+
+/* Footer Styles */
+.site-footer {
+    background-color: rgb(5, 5, 71);
+    color: #FFFFFF;
+    border: 1px solid #000080;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', cursive;
+}
+
+.site-footer p {
+    color: #FFFFFF;
+    font-family: 'Poppins', cursive;
+}
+
+.site-footer a {
+    color: #E0E0E0;
+    text-decoration: none;
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.site-footer a:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
 }
 
 /* Social Username Link */
 .social-username-link {
     text-decoration: none;
     color: inherit;
+}
+
+/* Section Specific Styles */
+#home {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0px;
+    margin-top: 0;
+}
+
+#about {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0px;
+}
+
+#social {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0px;
+}
+
+#portfolio {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0px;
 }

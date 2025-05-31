@@ -14,7 +14,7 @@ $repos_data = json_decode(file_get_contents("https://api.github.com/users/Ikiilo
 ])), true);
 
 // Mendapatkan data dari API Instagram (Apify)
-$api_url = "https://api.apify.com/v2/datasets/eq2DdWBPCrw69cuP2/items?clean=true&format=json";
+$api_url = "https://api.apify.com/v2/datasets/I61ERqcc8ymloojFr/items?clean=true&format=json&";
 
 // Cara 1: Menggunakan file_get_contents (pastikan allow_url_fopen = On di php.ini)
 $data = file_get_contents($api_url);
@@ -65,6 +65,14 @@ if (!empty($image_url)) {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=Rubik+80s+Fade&family=Sixtyfour+Convergence&family=Style+Script&display=swap" rel="stylesheet">
+
     <!-- My CSS -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -87,8 +95,12 @@ if (!empty($image_url)) {
               <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="#social">Social</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#portfolio">Repository</a>
             </li>
+
           </ul>
         </div>
       </div>
@@ -146,7 +158,7 @@ if (!empty($image_url)) {
 
                 <div class="text-center">
                   <h2>📫 Connect with me:</h2>
-                  <p>
+                  <p class="contact-info">
                     📧 Email: <a href="mailto:senga8818@gmail.com">senga8818@gmail.com</a><br>
                     💼 LinkedIn: <a href="https://www.linkedin.com/in/m-riski-ramadani-144449201/" target="_blank">My LinkedIn</a>
                   </p>
@@ -159,7 +171,7 @@ if (!empty($image_url)) {
     </section>
 
     <!-- Social Media -->
-     <section class="social bg-light py-5" id="social">
+     <section class="social py-5" id="social">
       <div class="container">
         <div class="row">
           <div class="col text-center font-weight-bold">
@@ -210,42 +222,50 @@ if (!empty($image_url)) {
     <!-- Repo -->
     <section class="portfolio " id="portfolio">
       <div class="container">
-        <div class="row pt-4 mb-4">
+        <div class="row pt-4 mb-4 mt-4">
           <div class="col text-center font-weight-bold">
-            <h2>My Repository</h2>
+            <h2>My Personal Project</h2>
           </div>
         </div>
-        <div class="row d-flex align-items-stretch justify-content-center">
-          <?php if (!empty($repos_data)): // Check if repository data is available ?>
-              <?php foreach ($repos_data as $repo): // Loop through each repository ?>
-                  <div class="col-md-4 mb-4">
-                      <div class="card w-100 shadow h-100 portfolio-card">
-                          <div class="card-body d-flex flex-column">
-                              <h5 class="card-title"><?php echo htmlspecialchars($repo['name']); ?></h5>
-                              <p class="card-text flex-grow-1"><?php echo htmlspecialchars($repo['description'] ?? 'No description available.'); ?></p>
-                              <a href="<?php echo htmlspecialchars($repo['html_url']); ?>" target="_blank" class="btn btn-dark btn-sm mt-2">View on GitHub</a>
-                          </div>
-                      </div>
+        <div class="row justify-content-center">
+          <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
+            <div class="card w-100 shadow social-card">
+              <div class="card-body d-flex align-items-center">
+                <div class="flex-grow-1 text-center">
+                  <h5 class="mb-1">Ikiiloh Game</h5>
+                  <div class="mt-2">
+                    <a href="https://github.com/Ikiiloh/Project_Ikiloh_Game" target="_blank" class="btn btn-dark btn-sm">View on GitHub</a>
+                    <a href="https://ikiiloh-game.vercel.app" target="_blank" class="btn btn-dark btn-sm ml-2">Visit Web</a>
                   </div>
-              <?php endforeach; ?>
-          <?php else: // Display a message if no repositories are found or API call failed ?>
-              <div class="col text-center">
-                  <p>Could not load repositories from GitHub.</p>
+                </div>
               </div>
-          <?php endif; ?>
+            </div>
+          </div>
+          <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
+            <div class="card w-100 shadow social-card">
+              <div class="card-body d-flex align-items-center">
+                <div class="flex-grow-1 text-center">
+                  <h5 class="mb-1">My Another Project</h5>
+                  <div class="mt-2">
+                    <a href="https://github.com/Ikiiloh?tab=repositories" target="_blank" class="btn btn-dark btn-sm">View on GitHub</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
 
-    <!-- footer -->
-    <footer class="bg-dark text-white mt-5">
-      <div class="container">
-        <div class="row">
-          <div class="col text-center">
-            <p>Ikiiloh &copy; 2025.</p>
-          </div>
-        </div>
+    <footer class="site-footer">
+      <div class="container text-center">
+          <p>
+              &copy; 2025 - Created by
+              <a href="https://github.com/Ikiiloh/API_Training/tree/main/Ikiloh_Game" target="_blank" title="Kunjungi GitHub Saya">
+                  <i class="fab fa-github"></i> Ikiiloh
+              </a>
+          </p>
       </div>
     </footer>
 
