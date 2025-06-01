@@ -1,3 +1,12 @@
+/* Base Styles */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
 /* Loading Screen Styles */
 .loading-screen {
     position: fixed;
@@ -80,6 +89,8 @@ section {
     margin: 20px 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    overflow-x: hidden;
 }
 
 footer {
@@ -510,7 +521,7 @@ a:hover {
     }
 
     h2 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 
     h3, h4, h5, h6 {
@@ -604,8 +615,24 @@ a:hover {
 
     /* Container Padding */
     .container {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-right: 10px;
+        padding-left: 10px;
+        max-width: 100%;
+    }
+
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .col, .col-md-4, .col-md-8, .col-md-5 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .card {
+        margin-right: 0;
+        margin-left: 0;
     }
 
     /* Navbar Mobile Effects */
@@ -688,7 +715,7 @@ a:hover {
     }
 
     h2 {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .social-profile-image, .project-image {
@@ -709,11 +736,25 @@ a:hover {
 
     /* Container Padding for Small Screens */
     .container {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-right: 5px;
+        padding-left: 5px;
     }
 
-    /* Card Adjustments for Small Screens */
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .col, .col-md-4, .col-md-8, .col-md-5 {
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+
+    .card {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
     .social-card .card-body, .portfolio-card .card-body {
         padding: 0.75rem;
     }
@@ -763,5 +804,69 @@ a:hover {
 @supports (-webkit-touch-callout: none) {
     .loading-screen {
         height: -webkit-fill-available;
+    }
+}
+
+/* Container Fixes */
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow-x: hidden;
+}
+
+/* Section Fixes */
+section {
+    min-height: 420px;
+    background-color: rgba(255, 255, 255, 0.72);
+    padding: 20px 0;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+    .container {
+        padding-right: 10px;
+        padding-left: 10px;
+        max-width: 100%;
+    }
+
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .col, .col-md-4, .col-md-8, .col-md-5 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .card {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .col, .col-md-4, .col-md-8, .col-md-5 {
+        padding-right: 3px;
+        padding-left: 3px;
     }
 }
