@@ -178,11 +178,12 @@ p {
     font-family: 'Press Start 2P', system-ui;
     transition: all 0.3s ease;
     position: relative;
+    display: inline-block;
+    padding: 0.5rem 1rem;
 }
 
 .nav-link:hover, .nav-link.active {
     color: #ff0000 !important;
-    transform: scale(1.05);
     text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
 }
 
@@ -200,6 +201,25 @@ p {
 
 .nav-link:hover::after {
     width: 100%;
+}
+
+/* Add this new style for the hover effect */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 0, 0, 0.1);
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    border-radius: 4px;
+    z-index: -1;
+}
+
+.nav-link:hover::before {
+    transform: scale(1);
 }
 
 /* Link Hover Effects */
