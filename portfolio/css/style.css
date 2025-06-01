@@ -1,3 +1,72 @@
+/* Loading Screen Styles */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0a2342;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-text {
+    font-family: 'Press Start 2P', cursive;
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-bottom: 20px;
+    animation: blink 1s infinite;
+}
+
+.loading-pixel {
+    width: 20px;
+    height: 20px;
+    background-color:rgb(255, 255, 255);
+    margin: 20px auto;
+    animation: pixelMove 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes fill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@keyframes pixelMove {
+    0% { transform: translateX(-50px); }
+    50% { transform: translateX(50px); }
+    100% { transform: translateX(-50px); }
+}
+
+@media (max-width: 768px) {
+    .loading-text {
+        font-size: 20px;
+    }
+    .loading-bar {
+        width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-text {
+        font-size: 16px;
+    }
+    .loading-bar {
+        width: 120px;
+    }
+}
+
 body {
     margin-top: 50px;
     background-color: #0a2342;
@@ -16,7 +85,7 @@ section {
 footer {
     min-height: 50px;
     padding-top: 12px;
-    background-color:rgba(0, 0, 128, 0.5) !important;
+    background-color:#000080 !important;
     border-top: 2px solid #E0E0E0;
 }
 
@@ -34,6 +103,11 @@ h3, h4, h5, h6 {
 p {
     font-family: 'Pixelify Sans', cursive;
     color: #000080;
+}
+
+.lead {
+    font-family: 'Press Start 2P', system-ui;
+    color:#000080;
 }
 
 .contact-info {
@@ -68,11 +142,13 @@ p {
     color: #ff0000 !important;
     font-family: 'Press Start 2P', system-ui;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .navbar-brand:hover {
     color: #ff3333 !important;
     transform: scale(1.05);
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
 .nav-link {
@@ -81,21 +157,16 @@ p {
     color: #E0E0E0 !important;
     font-family: 'Press Start 2P', system-ui;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .nav-link:hover, .nav-link.active {
-    underline: #ff0000;
     color: #ff0000 !important;
     transform: scale(1.05);
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
 }
 
-/* Navbar Link Hover Effect */
-.navbar .nav-link {
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.navbar .nav-link::after {
+.nav-link::after {
     content: '';
     position: absolute;
     width: 0;
@@ -104,10 +175,112 @@ p {
     left: 0;
     background-color: #ff0000;
     transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
 }
 
-.navbar .nav-link:hover::after {
+.nav-link:hover::after {
     width: 100%;
+}
+
+/* Link Hover Effects */
+a {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ff0000 !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+}
+
+.social-username-link:hover {
+    color: #ff0000 !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Button Hover Effects */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-dark {
+    background-color: #000080;
+    border: 2px solid #E0E0E0;
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.btn-dark:hover {
+    background-color: #0000a0;
+    border-color: #ff0000;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Card Hover Effects */
+.social-card, .portfolio-card {
+    transition: all 0.3s ease;
+}
+
+.social-card:hover, .portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: #ff0000;
+}
+
+.social-card:hover .social-profile-image,
+.portfolio-card:hover .project-image {
+    transform: scale(1.1);
+    border-color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.social-profile-image, .project-image {
+    transition: all 0.3s ease;
+}
+
+/* Footer Link Hover */
+.site-footer a {
+    transition: all 0.3s ease;
+}
+
+.site-footer a:hover {
+    color: #ff0000 !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Contact Info Link Hover */
+.contact-info a:hover {
+    color: #ff0000 !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 /* Jumbotron Styles */
@@ -178,18 +351,6 @@ p {
     font-family: 'Pixelify Sans', cursive;
 }
 
-/* Button Styles */
-.btn-dark {
-    background-color: #000080;
-    border: 2px solid #E0E0E0;
-    font-family: 'Pixelify Sans', cursive;
-}
-
-.btn-dark:hover {
-    background-color: #0000a0;
-    transform: scale(1.05);
-}
-
 /* Profile Image Styles */
 .profile-image {
     border: 5px solid #000080
@@ -197,18 +358,72 @@ p {
 
 .social-profile-image {
     border-radius: 100px;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border: 3px solid #000080;
     background-color: #1a2b3c;
 }
 
 .project-image {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 100px;
     border: none;
     background-color: #1a2b3c;
+    object-fit: contain;
+    padding: 5px;
+}
+
+/* SVG Specific Styles */
+.project-image[src*=".svg"] {
+    width: 90px;
+    height: 90px;
+    padding: 10px;
+    background-color: transparent;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .project-image {
+        width: 80px;
+        height: 80px;
+        padding: 8px;
+    }
+
+    .project-image[src*=".svg"] {
+        width: 80px;
+        height: 80px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-image {
+        width: 60px;
+        height: 60px;
+        padding: 6px;
+    }
+
+    .project-image[src*=".svg"] {
+        width: 60px;
+        height: 60px;
+        padding: 10px;
+    }
+}
+
+/* Tablet Specific Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .project-image {
+        width: 90px;
+        height: 90px;
+        padding: 8px;
+    }
+
+    .project-image[src*=".svg"] {
+        width: 90px;
+        height: 90px;
+        padding: 12px;
+    }
 }
 
 /* Footer Styles */
@@ -263,4 +478,290 @@ p {
 #portfolio {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 0px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    /* General Styles */
+    body {
+        margin-top: 60px;
+    }
+
+    section {
+        min-height: auto;
+        padding: 15px 0;
+        margin: 15px 0;
+    }
+
+    /* Typography */
+    .display-4 {
+        font-size: 1.8rem !important;
+        line-height: 1.3;
+        word-wrap: break-word;
+        padding: 0 10px;
+    }
+
+    .lead {
+        font-size: 1rem !important;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3, h4, h5, h6 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    /* Navbar */
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 0.8rem;
+    }
+
+    .nav-link {
+        font-size: 0.7rem;
+        margin: 5px 10px;
+    }
+
+    /* Jumbotron/Home Section */
+    .jumbotron {
+        padding: 2rem 1rem;
+    }
+
+    .profile-image {
+        width: 250px !important;
+        height: 250px !important;
+        object-fit: cover;
+        margin: 0 auto 1.5rem auto;
+        display: block;
+    }
+
+    /* Card Layout Improvements */
+    .social-card, .portfolio-card {
+        margin: 1rem auto;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .social-profile-image, .project-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+
+    /* Social Media Section */
+    .social-card .card-body {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        padding: 1rem;
+    }
+
+    .social-card .social-profile-image {
+        margin: 0 1rem 0 0;
+    }
+
+    /* Portfolio Section */
+    .portfolio-card .card-body {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        padding: 1rem;
+    }
+
+    .portfolio-card .project-image {
+        margin: 0 1rem 0 0;
+    }
+
+    /* Button Adjustments */
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        white-space: nowrap;
+    }
+
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* Container Padding */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Navbar Mobile Effects */
+    .navbar-brand:active {
+        transform: scale(0.95);
+        color: #ff3333 !important;
+    }
+
+    .nav-link:active {
+        transform: scale(0.95);
+        color: #ff0000 !important;
+    }
+
+    /* Button Mobile Effects */
+    .btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-dark:active {
+        background-color: #0000a0;
+        border-color: #ff0000;
+    }
+
+    /* Card Mobile Effects */
+    .social-card:active, .portfolio-card:active {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-card:active .social-profile-image,
+    .portfolio-card:active .project-image {
+        transform: scale(1.05);
+    }
+
+    /* Link Mobile Effects */
+    a:active, .social-username-link:active {
+        transform: translateY(1px);
+        opacity: 0.8;
+    }
+
+    /* Disable hover effects on mobile */
+    .btn::after {
+        display: none;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Even smaller screens */
+    .display-4 {
+        font-size: 1.4rem !important;
+        line-height: 1.2;
+    }
+
+    .navbar-brand {
+        font-size: 0.7rem;
+    }
+
+    .nav-link {
+        font-size: 0.6rem;
+        margin: 3px 8px;
+    }
+
+    .profile-image {
+        width: 200px !important;
+        height: 200px !important;
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    .social-profile-image, .project-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 0.75rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .btn-sm {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    /* Container Padding for Small Screens */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Card Adjustments for Small Screens */
+    .social-card .card-body, .portfolio-card .card-body {
+        padding: 0.75rem;
+    }
+
+    .social-card:active, .portfolio-card:active {
+        transform: translateY(-1px);
+    }
+
+    .social-card:active .social-profile-image,
+    .portfolio-card:active .project-image {
+        transform: scale(1.03);
+    }
+}
+
+/* Tablet Specific Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .profile-image {
+        width: 280px !important;
+        height: 280px !important;
+        object-fit: cover;
+        margin: 0 auto 1.5rem auto;
+    }
+
+    .social-card, .portfolio-card {
+        margin: 1rem auto;
+        max-width: 90%;
+    }
+
+    .social-profile-image, .project-image {
+        width: 90px;
+        height: 90px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+/* Add touch feedback for iOS devices */
+@supports (-webkit-touch-callout: none) {
+    .btn, .nav-link, a, .social-card, .portfolio-card {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+    .loading-screen {
+        height: -webkit-fill-available;
+    }
 }
