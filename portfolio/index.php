@@ -1,12 +1,47 @@
 <?php
-// Ambil data user dari GitHub API
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Load environment variables
+function loadEnv($path) {
+  if (!file_exists($path)) {
+      throw new Exception('.env file not found');
+  }
+  
+  $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+  foreach ($lines as $line) {
+      if (strpos(trim($line), '#') === 0) {
+          continue; // Skip comments
+      }
+      
+      list($name, $value) = explode('=', $line, 2);
+      $name = trim($name);
+      $value = trim($value);
+      
+      if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+          putenv(sprintf('%s=%s', $name, $value));
+          $_ENV[$name] = $value;
+          $_SERVER[$name] = $value;
+      }
+  }
+}
+
+// Load .env file
+try {
+  loadEnv(__DIR__ . '/.env');
+} catch (Exception $e) {
+  die('Error loading .env file: ' . $e->getMessage());
+}
+
+// Ambil data user dari GitHub API (TETAP SEPERTI SEMULA)
 $user_data = json_decode(file_get_contents("https://api.github.com/users/Ikiiloh", false, stream_context_create([
     "http" => [
         "user_agent" => "request"
     ]
 ])), true);
 
-// Ambil data repositori dari GitHub API
+// Ambil data repositori dari GitHub API (TETAP SEPERTI SEMULA)
 $repos_data = json_decode(file_get_contents("https://api.github.com/users/Ikiiloh/repos", false, stream_context_create([
     "http" => [
         "user_agent" => "request"
@@ -14,45 +49,127 @@ $repos_data = json_decode(file_get_contents("https://api.github.com/users/Ikiilo
 ])), true);
 
 // Mendapatkan data dari API Instagram (Apify)
-$api_url = "https://api.apify.com/v2/datasets/I61ERqcc8ymloojFr/items?clean=true&format=json&";
+$api_url = getenv('APIFY_INSTAGRAM_API_URL');
 
-// Cara 1: Menggunakan file_get_contents (pastikan allow_url_fopen = On di php.ini)
-$data = file_get_contents($api_url);
-$ig_data = json_decode($data, true);
+if (!$api_url) {
+  die('Instagram API URL not found in environment variables');
+}
 
-// Cara 2: Menggunakan cURL (lebih universal)
+// 1. Definisikan fungsi get_CURL terlebih dahulu (TETAP SEPERTI SEMULA)
 function get_CURL($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     $output = curl_exec($ch);
+    if(curl_errno($ch)){
+        // echo 'Curl error in get_CURL: ' . curl_error($ch);
+    }
     curl_close($ch);
     return json_decode($output, true);
 }
-$ig_data = get_CURL($api_url);
 
-$image_url = isset($ig_data[0]['profilePicUrlHD']) ? $ig_data[0]['profilePicUrlHD'] : ''; // Get the URL from API, or empty if not available
-$base64_image = ''; // Initialize Base64 string as empty
-
-// Get Instagram username and URL
-$ig_username = isset($ig_data[0]['username']) ? $ig_data[0]['username'] : 'Username Error';
-$ig_url = isset($ig_data[0]['url']) ? $ig_data[0]['url'] : '#';
-
-// Check if the API URL is available and try to fetch the image data
-if (!empty($image_url)) {
-    // Use @file_get_contents to fetch data. @ suppresses warnings if fetching fails.
-    // We also check if the result is not FALSE, which indicates failure.
-    $image_data = @file_get_contents($image_url);
-    
-    if ($image_data !== FALSE) {
-        // Successfully fetched data, encode it in Base64
-        // Determine content type - assuming jpeg for profile pic, but can be made dynamic if needed
-        $base64_image = 'data:image/jpeg;base64,' . base64_encode($image_data);
+// TAMBAHAN: Fungsi khusus untuk menangani gambar Instagram
+function fetch_instagram_image_with_fallback($image_url) {
+    if (empty($image_url)) {
+        return create_placeholder_image();
     }
-    // If file_get_contents returns FALSE, $base64_image remains empty, resulting in an empty src below
+
+    // Method 1: Coba dengan headers yang lebih lengkap
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $image_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    
+    // Headers untuk meniru browser asli
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept: image/webp,image/apng,image/*,*/*;q=0.8',
+        'Accept-Language: en-US,en;q=0.9',
+        'Accept-Encoding: gzip, deflate, br',
+        'Referer: https://www.instagram.com/',
+        'Sec-Fetch-Dest: image',
+        'Sec-Fetch-Mode: no-cors',
+        'Sec-Fetch-Site: cross-site',
+        'sec-ch-ua: "Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        'sec-ch-ua-mobile: ?0',
+        'sec-ch-ua-platform: "Windows"'
+    ]);
+    
+    $image_data = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
+    curl_close($ch);
+    
+    if ($image_data !== false && empty($curl_error) && $http_code == 200) {
+        return 'data:image/jpeg;base64,' . base64_encode($image_data);
+    }
+    
+    // Method 2: Coba dengan proxy service
+    $proxy_url = "https://images.weserv.nl/?url=" . urlencode($image_url) . "&w=150&h=150&fit=cover&mask=circle";
+    
+    $ch_proxy = curl_init();
+    curl_setopt($ch_proxy, CURLOPT_URL, $proxy_url);
+    curl_setopt($ch_proxy, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch_proxy, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch_proxy, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    
+    $proxy_data = curl_exec($ch_proxy);
+    $proxy_code = curl_getinfo($ch_proxy, CURLINFO_HTTP_CODE);
+    curl_close($ch_proxy);
+    
+    if ($proxy_data !== false && $proxy_code == 200) {
+        return 'data:image/jpeg;base64,' . base64_encode($proxy_data);
+    }
+    
+    return create_placeholder_image();
 }
 
-// Display the image tag. The src will be the Base64 data URI if fetching succeeded, otherwise it will be empty.
+function create_placeholder_image() {
+    // Buat placeholder SVG yang menarik
+    $svg = '<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#405DE6;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#833AB4;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FD1D1D;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        <circle cx="75" cy="75" r="70" fill="url(#grad1)"/>
+        <circle cx="75" cy="75" r="45" fill="none" stroke="white" stroke-width="3"/>
+        <circle cx="75" cy="75" r="15" fill="none" stroke="white" stroke-width="3"/>
+        <circle cx="95" cy="55" r="8" fill="white"/>
+        <text x="75" y="130" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Instagram</text>
+    </svg>';
+    
+    return 'data:image/svg+xml;base64,' . base64_encode($svg);
+}
+
+// 2. Panggil get_CURL untuk mengisi $ig_data (TETAP SEPERTI SEMULA)
+$ig_data = get_CURL($api_url);
+
+// 3. Debug (OPSIONAL - bisa dicomment jika tidak perlu)
+// echo "<pre>Debug Instagram Data:\n";
+// var_dump($ig_data);
+// echo "</pre>";
+
+// 4. Dapatkan data Instagram
+$image_url = isset($ig_data[0]['profilePicUrlHD']) ? $ig_data[0]['profilePicUrlHD'] : '';
+$ig_username = isset($ig_data[0]['username']) ? $ig_data[0]['username'] : 'ikiiloh';
+$ig_url = isset($ig_data[0]['url']) ? $ig_data[0]['url'] : 'https://instagram.com/ikiiloh';
+
+// 5. Proses gambar Instagram dengan fungsi yang sudah diperbaiki
+if (!empty($image_url)) {
+    $base64_image = fetch_instagram_image_with_fallback($image_url);
+} else {
+    $base64_image = create_placeholder_image();
+}
+
 ?>
 
 <!doctype html>
@@ -82,7 +199,7 @@ if (!empty($image_url)) {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#home">M. Riski Ramadani</a>
+        <a class="navbar-brand" href="#home">M.Riski Ramadani</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -100,22 +217,20 @@ if (!empty($image_url)) {
             <li class="nav-item">
               <a class="nav-link" href="#portfolio">Repository</a>
             </li>
-
           </ul>
         </div>
       </div>
     </nav>
 
-
     <div class="jumbotron" id="home">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-4 text-center">
-            <img src="img/profile_gigup.jpeg" class="img-thumbnail profile-image rounded-circle" style="width: 250px; height: 250px;">
+            <img src="https://res.cloudinary.com/dlcljeoih/image/upload/v1748716691/profile_gigup_arroia.jpg" class="img-thumbnail profile-image rounded-circle" style="width: 300px; height: 300px;">
           </div>
           <div class="col-md-8">
             <h1 class="display-4 text-center font-weight-bold">
-              <?php echo isset($ig_data[0]['fullName']) ? $ig_data[0]['fullName'] : 'Nama Tidak Ditemukan'; ?>
+              <?php echo isset($ig_data[0]['fullName']) ? $ig_data[0]['fullName'] : 'M. Riski Ramadani'; ?>
             </h1>
             <h2 class="lead text-center font-weight-bold">Student | Beginner Programmer</h2>
               <p class="text-justify">I'm a junior developer from Indonesia, currently learning web development, API integration, Python, and JavaScript. I'm working on personal projects and uni tasks, exploring GitHub Actions and automation.   
@@ -124,7 +239,6 @@ if (!empty($image_url)) {
         </div>
       </div>
     </div>
-
 
     <!-- About -->
     <section class="about" id="about">
@@ -218,7 +332,6 @@ if (!empty($image_url)) {
       </div>
      </section>
 
-
     <!-- Repo -->
     <section class="portfolio " id="portfolio">
       <div class="container">
@@ -231,10 +344,11 @@ if (!empty($image_url)) {
           <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
             <div class="card w-100 shadow social-card">
               <div class="card-body d-flex align-items-center">
+              <img src="./img/logo_web_game.svg" class="img-thumbnail mr-3 project-image">
                 <div class="flex-grow-1 text-center">
                   <h5 class="mb-1">Ikiiloh Game</h5>
                   <div class="mt-2">
-                    <a href="https://github.com/Ikiiloh/Project_Ikiloh_Game" target="_blank" class="btn btn-dark btn-sm">View on GitHub</a>
+                    <a href="https://github.com/Ikiiloh/API_Training/tree/de8024fa3ef26301d678cf75b70cf28aae7d30cb/Ikiloh_Game" target="_blank" class="btn btn-dark btn-sm">View on GitHub</a>
                     <a href="https://ikiiloh-game.vercel.app" target="_blank" class="btn btn-dark btn-sm ml-2">Visit Web</a>
                   </div>
                 </div>
@@ -244,6 +358,7 @@ if (!empty($image_url)) {
           <div class="col-md-5 d-flex align-items-center justify-content-center mb-2">
             <div class="card w-100 shadow social-card">
               <div class="card-body d-flex align-items-center">
+              <img src="./img/White-Pixel-Mouse-Cursor-Arow-Fixed.svg" class="img-thumbnail mr-3 project-image">
                 <div class="flex-grow-1 text-center">
                   <h5 class="mb-1">My Another Project</h5>
                   <div class="mt-2">
@@ -257,7 +372,6 @@ if (!empty($image_url)) {
       </div>
     </section>
 
-
     <footer class="site-footer">
       <div class="container text-center">
           <p>
@@ -269,11 +383,22 @@ if (!empty($image_url)) {
       </div>
     </footer>
 
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Bootstrap JS Dependencies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- Image Error Handler -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Handle all images in the document
+        document.querySelectorAll('img').forEach(function(img) {
+          img.onerror = function() {
+            this.onerror = null; // Prevent infinite loop
+            this.src = 'img/profile1.png';
+          };
+        });
+      });
+    </script>
   </body>
 </html>

@@ -52,8 +52,11 @@ p {
     text-decoration: underline;
 }
 
+
 /* Navbar Styles */
 .navbar {
+    padding-left: 0;
+    padding-right: 0;
     background:rgba(0, 0, 128, 0.5) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -61,6 +64,7 @@ p {
 }
 
 .navbar-brand {
+    margin-left: 8px;
     color: #ff0000 !important;
     font-family: 'Press Start 2P', system-ui;
     transition: all 0.3s ease;
@@ -72,14 +76,38 @@ p {
 }
 
 .nav-link {
+    margin-right: 20px;
+    margin-left: 20px;
     color: #E0E0E0 !important;
     font-family: 'Press Start 2P', system-ui;
     transition: all 0.3s ease;
 }
 
 .nav-link:hover, .nav-link.active {
+    underline: #ff0000;
     color: #ff0000 !important;
     transform: scale(1.05);
+}
+
+/* Navbar Link Hover Effect */
+.navbar .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff0000;
+    transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::after {
+    width: 100%;
 }
 
 /* Jumbotron Styles */
@@ -172,6 +200,14 @@ p {
     width: 80px;
     height: 80px;
     border: 3px solid #000080;
+    background-color: #1a2b3c;
+}
+
+.project-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    border: none;
     background-color: #1a2b3c;
 }
 
